@@ -1,5 +1,11 @@
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-import { QUESTION } from './types';
+import { QUESTION, UserQuestionInput } from './types';
+import { useDispatch } from "react-redux";
+
+// slices
+import { changeAnswer } from "@/lib/state/questions/questionSlice";
+
+
 // 
 export async function useFetchQuestionsData() {
 
@@ -35,3 +41,17 @@ export async function useFetchQuestionsData() {
     return questionnaire;
 
 }
+
+export const useHandleChangeAnswer = () => {
+    const dispatch = useDispatch();
+    const updateState = ( answer :  Array<string>, data : UserQuestionInput ) => {
+        const answeredData: UserQuestionInput = {
+            question: data.question,
+            selectedAnswer: [...answer],
+            index: data.index
+        }
+        dispatch(changeAnswer(answeredData))
+    }
+    return {updateState}
+}
+
