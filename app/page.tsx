@@ -7,7 +7,7 @@ export default async function Home() {
   const dat = await useFetchQuestionsData()
   
   return (
-    <div className="h-[40rem] flex items-center justify-center w-full">
+    <div className="">
      <Questionnaire questionItems={dat}/>
     </div>
   );

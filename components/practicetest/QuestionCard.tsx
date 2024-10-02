@@ -8,19 +8,12 @@ import { useHandleChangeAnswer } from "@/lib/fetchhooks";
 
 function QuestionCard({ data }: { data: UserQuestionInput }) {
     const { updateState } = useHandleChangeAnswer();
-    // const dispatch = useDispatch();
-    // const handleChangeAnswer = ( answer :  string ) => {
-    //     const answeredData: UserQuestionInput = {
-    //         question: data.question,
-    //         selectedAnswer: [answer],
-    //         index: data.index
-    //     }
-    //     dispatch(changeAnswer(answeredData))
-    // }
+
     if (!data) return;
     return (
-        <section className="border-2 p-8">
-            <h4 className="font-medium text-xl">
+        <>
+            <h6>Question {data.index+1}</h6>
+            <h4 className="font-medium md:text-xl">
                 {
                     data.question.prompt
                 }
@@ -29,7 +22,7 @@ function QuestionCard({ data }: { data: UserQuestionInput }) {
                 data.question.correctAnswer.length > 1 ?
                     <MultipleSelect data={data} />
                     :
-                    <RadioGroup onValueChange={(val) => updateState([val], data)}>
+                    <RadioGroup value={data.selectedAnswer![0]} onValueChange={(val) => updateState([val], data)}>
                         {
                             data.question.options.map((e, i) => (
                                 <div key={i} className="flex items-center space-x-2">
@@ -40,7 +33,7 @@ function QuestionCard({ data }: { data: UserQuestionInput }) {
                         }
                     </RadioGroup>
             }
-        </section>
+        </>
     )
 }
 

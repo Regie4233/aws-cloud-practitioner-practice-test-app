@@ -13,16 +13,17 @@ function MultipleSelect({ data }: { data: UserQuestionInput }) {
     const checkSelections = (answers: string) => {
         setSelectedAns(current => [...current, answers])
         selectedAnsRef.current = [...selectedAnsRef.current, answers];
-        console.log(selectedAnsRef.current)
+        //  setSelectedAns( selectedAnsRef.current)
+        console.log("checked   "+selectedAnsRef.current)
         updateState(selectedAnsRef.current, data)
 
     }
 
     const uncheckSelection = (answers: string) => {
-        const newList = selectedAns.filter(ans => ans !== answers);
+        const newList = selectedAnsRef.current.filter(ans => ans !== answers);
         setSelectedAns(newList)
         selectedAnsRef.current = newList
-        console.log(selectedAnsRef.current)
+        console.log('uncheclk  '+selectedAnsRef.current)
         updateState(selectedAnsRef.current, data)
     }
 
@@ -31,14 +32,14 @@ function MultipleSelect({ data }: { data: UserQuestionInput }) {
             {
                 data.question.options.map((e, i) => (
                     <div key={i} className="flex items-center space-x-2">
-                        <Checkbox id={e} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
+                        <Checkbox id={createAlphabetIndex(i)} checked={data.selectedAnswer!.includes(createAlphabetIndex(i))} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
                             return checked ?
                                 checkSelections(createAlphabetIndex(i))
                                 :
                                 uncheckSelection(createAlphabetIndex(i))
                         }} />
                         <label
-                            htmlFor={e}
+                            htmlFor={createAlphabetIndex(i)}
                             className=""
                         >
                             {e}
