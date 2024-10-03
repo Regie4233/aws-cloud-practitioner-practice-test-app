@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import questionReducer from './state/questions/questionSlice'
+import viewReducer from './state/views/viewSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      questionData: questionReducer
+      questionData: questionReducer,
+      viewController: viewReducer
     },
   })
 }

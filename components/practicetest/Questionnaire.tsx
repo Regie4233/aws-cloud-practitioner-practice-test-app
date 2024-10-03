@@ -8,8 +8,8 @@ import Exam from "./Exam";
 import Results from "./Results";
 function Questionnaire({ questionItems }: { questionItems: Array<QUESTION> }) {
   const countdata = useAppSelector((state) => state.questionData);
+  const view = useAppSelector(state => state.viewController)
   const [cardindex, setCardIndex] = useState(0);
-  const [view, setView] = useState('result');
   console.log(countdata)
   const dispatch = useDispatch();
 
@@ -42,13 +42,13 @@ function Questionnaire({ questionItems }: { questionItems: Array<QUESTION> }) {
       </section>
       <main className="flex flex-col justify-between">
         {
-          view === 'home' ?
+          view.viewcode === 'home' ?
             null
             :
-            view === 'exam' ?
+            view.viewcode === 'exam' ?
               <Exam countdata={countdata} cardindex={cardindex} setCardIndex={setCardIndex} handleValueChange={handleValueChange} />
               :
-              view === 'result' ?
+              view.viewcode === 'result' ?
                 <Results data={countdata}/>
                 :
                 null

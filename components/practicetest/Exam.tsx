@@ -1,9 +1,10 @@
-import React from 'react'
 import QuestionCard from './QuestionCard'
 import { UserQuestionInput } from '@/lib/types'
+import { useDispatch } from "react-redux";
+import { changeView } from '@/lib/state/views/viewSlice';
 
 function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { countdata: UserQuestionInput[], cardindex: number, setCardIndex: (index: number) => void, handleValueChange: (newValue: number) => void }) {
-
+    const dispatch = useDispatch();
     return (
         <>
             <section className="border-x-2 border-t-2 p-8 flex flex-col justify-between gap-5 h-[50vh]">
@@ -17,7 +18,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                     cardindex !== 49 ?
                         <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex + 1)}>Next</button>
                         :
-                        <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex + 1)}>Submit Answers</button>
+                        <button className="hover:scale-105 transition-transform" onClick={() => dispatch(changeView('result'))}>Submit Answers</button>
                 }
 
             </section>

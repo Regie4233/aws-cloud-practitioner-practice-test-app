@@ -1,7 +1,10 @@
 import { getFinalScore } from '@/lib/helpers'
+import { changeView } from '@/lib/state/views/viewSlice';
 import { UserQuestionInput } from '@/lib/types'
+import { useDispatch } from 'react-redux';
 
 function Results({ data }: { data: UserQuestionInput[] }) {
+  const dispatch = useDispatch()
   let correctCount: number = 0;
 
   data.forEach(element => {
@@ -17,7 +20,8 @@ function Results({ data }: { data: UserQuestionInput[] }) {
           <p className='text-4xl font-semibold'>{correctCount / 50 * 100}%</p>
           <p className='text-lg'>{`(${correctCount}/50)`}</p>
         </section>
-        <button className='hover:opacity-90 flex flex-col items-center border w-fit m-auto p-2 bg-sky-600 text-white'>
+        <button onClick={() => dispatch(changeView('exam'))}
+        className='hover:opacity-90 flex flex-col items-center border w-fit m-auto p-2 bg-sky-600 text-white'>
           Re-Take Test
           <span className='text-sm'>Generate new Questions</span>
         </button>
@@ -29,7 +33,7 @@ function Results({ data }: { data: UserQuestionInput[] }) {
                   <h6><span className='font-bold'>{e.index + 1}.</span> {e.question.prompt}</h6>
                   {
                     getFinalScore(e) ?
-                     <p className='bg-green-300'>{e.selectedAnswer}</p>
+                     <p className='bg-green-300 text-center capitalize font-semibold'>{e.selectedAnswer}</p>
                       :
                       <div className='flex gap-2 justify-center bg-red-200'>
                         <p className='line-through'>
