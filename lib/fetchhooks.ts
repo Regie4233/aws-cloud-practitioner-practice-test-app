@@ -17,29 +17,17 @@ export async function useFetchQuestionsData() {
         }
     });
     const params = {
-        Bucket: 'eggsbucket',
-        Key: 'awsquestions/questions.json'
+        Bucket: process.env.BUCKET_NAME,
+        Key: process.env.BUCKET_KEY
     };
 
     const command = new GetObjectCommand(params);
     const res = await s3Client.send(command);
     const data = await res.Body?.transformToString();
     const jsonContent = JSON.parse(data!);
+    const questionList: QUESTION[] = [...jsonContent.questions]
 
-    const questionnaire: Array<QUESTION> = [];
-
-    for (let yy = 0; yy < 50; yy++) {
-        for (let index = 0; index < jsonContent.questions.length; index++) {
-            const randIndex = Math.floor(Math.random() * 150);
-            const targetitem: QUESTION = jsonContent.questions[randIndex];
-            if (!questionnaire.includes(targetitem)) {
-                questionnaire.push(targetitem)
-                break;
-            }
-        }
-    }
-    return questionnaire;
-
+    return questionList;
 }
 
 export const useHandleChangeAnswer = () => {

@@ -8,7 +8,7 @@ export default async function Home() {
   
   return (
     <div className="">
-     <Questionnaire questionItems={dat}/>
+     <Questionnaire questionList={dat}/>
     </div>
   );
 }

@@ -1,10 +1,9 @@
+import { useChangeView } from '@/lib/clienthooks';
 import { getFinalScore } from '@/lib/helpers'
-import { changeView } from '@/lib/state/views/viewSlice';
 import { UserQuestionInput } from '@/lib/types'
-import { useDispatch } from 'react-redux';
 
 function Results({ data }: { data: UserQuestionInput[] }) {
-  const dispatch = useDispatch()
+  const {handleSearch} = useChangeView();
   let correctCount: number = 0;
 
   data.forEach(element => {
@@ -20,7 +19,7 @@ function Results({ data }: { data: UserQuestionInput[] }) {
           <p className='text-4xl font-semibold'>{correctCount / 50 * 100}%</p>
           <p className='text-lg'>{`(${correctCount}/50)`}</p>
         </section>
-        <button onClick={() => dispatch(changeView('exam'))}
+        <button onClick={() => handleSearch('home')}
         className='hover:opacity-90 flex flex-col items-center border w-fit m-auto p-2 bg-sky-600 text-white'>
           Re-Take Test
           <span className='text-sm'>Generate new Questions</span>
@@ -35,11 +34,13 @@ function Results({ data }: { data: UserQuestionInput[] }) {
                     getFinalScore(e) ?
                      <p className='bg-green-300 text-center capitalize font-semibold'>{e.selectedAnswer}</p>
                       :
-                      <div className='flex gap-2 justify-center bg-red-200'>
-                        <p className='line-through'>
+                      <div className='flex gap-2 justify-center items-center bg-red-200'>
+                        <p className='font-bold capitalize text-red-900'>
                          {e.selectedAnswer}
                         </p>
+                       
                         <p className='flex gap-2 bg-green-200 w-fit p-1'>
+                        <span >Correct Answer:</span>
                           {
                             e.question.correctAnswer.map((correctAns, i) => (
                               <span key={i} className='font-semibold '>{correctAns}</span>

@@ -9,13 +9,13 @@ function MultipleSelect({ data }: { data: UserQuestionInput }) {
   
     const checkSelections = (answers: string) => {
         const newlist = [...data.selectedAnswer!, answers];
-        console.log(newlist)
+      
         updateState(newlist, data);
     }
 
     const uncheckSelection = (answers: string) => {
           const newlist = data.selectedAnswer?.filter(ans => ans !== answers);
-        console.log(newlist);
+      
         if(newlist === undefined) return;
         updateState(newlist, data);
     }
