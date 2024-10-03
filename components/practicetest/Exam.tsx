@@ -28,7 +28,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                         countdata.map((e, i) => {
                             if (e.selectedAnswer !== undefined)
                                 return (
-                                    <li key={i} className={`${cardindex === i ? 'border-2 border-dashed rounded-none border-gray-900' : 'cursor-pointer hover:underline'} ${e.selectedAnswer[0] !== '' ? 'bg-green-600 border-2 rounded-full' : ''}`}
+                                    <li key={i} className={`${cardindex === i ? 'border-2 border-dashed rounded-none border-gray-900' : 'cursor-pointer hover:underline'} ${e.selectedAnswer.length > 0 ? 'bg-green-600 border-2 rounded-full' : ''}`}
                                         onClick={() => setCardIndex(i)}
                                     >
                                         {e.index + 1}

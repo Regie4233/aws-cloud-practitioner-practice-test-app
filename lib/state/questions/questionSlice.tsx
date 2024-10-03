@@ -13,7 +13,7 @@ const questionSlice = createSlice({
       action.payload.forEach((element, i) => {
           state.push({
             question: element,
-            selectedAnswer: [''],
+            selectedAnswer: [],
             index: i
           })
       });

@@ -5,10 +5,11 @@ import { QUESTION } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Exam from "./Exam";
+import Results from "./Results";
 function Questionnaire({ questionItems }: { questionItems: Array<QUESTION> }) {
   const countdata = useAppSelector((state) => state.questionData);
   const [cardindex, setCardIndex] = useState(0);
-  const [view, setView] = useState('exam');
+  const [view, setView] = useState('result');
   console.log(countdata)
   const dispatch = useDispatch();
 
@@ -47,7 +48,10 @@ function Questionnaire({ questionItems }: { questionItems: Array<QUESTION> }) {
             view === 'exam' ?
               <Exam countdata={countdata} cardindex={cardindex} setCardIndex={setCardIndex} handleValueChange={handleValueChange} />
               :
-              null
+              view === 'result' ?
+                <Results data={countdata}/>
+                :
+                null
         }
       </main>
 

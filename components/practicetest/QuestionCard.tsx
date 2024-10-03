@@ -12,7 +12,7 @@ function QuestionCard({ data }: { data: UserQuestionInput }) {
     if (!data) return;
     return (
         <>
-            <h6>Question {data.index+1}</h6>
+            <h6>Question {data.index + 1}</h6>
             <h4 className="font-medium md:text-xl">
                 {
                     data.question.prompt
@@ -22,7 +22,12 @@ function QuestionCard({ data }: { data: UserQuestionInput }) {
                 data.question.correctAnswer.length > 1 ?
                     <MultipleSelect data={data} />
                     :
-                    <RadioGroup value={data.selectedAnswer![0]} onValueChange={(val) => updateState([val], data)}>
+                    <RadioGroup
+                        value={
+                            data.selectedAnswer!.length > 0 ? 
+                            data.selectedAnswer![0] : ''
+                        }
+                        onValueChange={(val) => updateState([val], data)}>
                         {
                             data.question.options.map((e, i) => (
                                 <div key={i} className="flex items-center space-x-2">
