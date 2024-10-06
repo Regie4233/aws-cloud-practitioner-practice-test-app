@@ -20,9 +20,10 @@ function QuestionCard({ data }: { data: UserQuestionInput }) {
             </h4>
             {
                 data.question.correctAnswer.length > 1 ?
-                    <MultipleSelect data={data} />
+                    <MultipleSelect data={data} disabled={data.isCorrect !== undefined ? true : false}/>
                     :
                     <RadioGroup
+                        disabled={data.isCorrect !== undefined ? true : false}
                         value={
                             data.selectedAnswer!.length > 0 ? 
                             data.selectedAnswer![0] : ''

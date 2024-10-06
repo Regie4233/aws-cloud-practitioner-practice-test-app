@@ -3,7 +3,7 @@ import { QUESTION, UserQuestionInput } from './types';
 import { useDispatch } from "react-redux";
 
 // slices
-import { changeAnswer } from "@/lib/state/questions/questionSlice";
+import { changeAnswer, setQuestionState } from "@/lib/state/questions/questionSlice";
 // import { json } from 'stream/consumers';
 
 
@@ -44,3 +44,16 @@ export const useHandleChangeAnswer = () => {
     return {updateState}
 }
 
+export const useHandleResult = () => {
+    const dispatch = useDispatch();
+    const setState = (result: boolean, data: UserQuestionInput) => {
+        const resultData: UserQuestionInput = {
+            question: data.question,
+            selectedAnswer: data.selectedAnswer,
+            index: data.index,
+            isCorrect: result
+        }
+        dispatch(setQuestionState(resultData))
+    }
+    return {setState}
+}

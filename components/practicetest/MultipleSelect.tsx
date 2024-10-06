@@ -4,7 +4,7 @@ import { Checkbox } from '../ui/checkbox'
 import { createAlphabetIndex } from '@/lib/helpers'
 import { useHandleChangeAnswer } from '@/lib/fetchhooks'
 
-function MultipleSelect({ data }: { data: UserQuestionInput }) {
+function MultipleSelect({ data, disabled }: { data: UserQuestionInput, disabled: boolean }) {
     const { updateState } = useHandleChangeAnswer();
   
     const checkSelections = (answers: string) => {
@@ -26,7 +26,9 @@ function MultipleSelect({ data }: { data: UserQuestionInput }) {
             {
                 data.question.options.map((e, i) => (
                     <div key={i} className="flex items-center space-x-2">
-                        <Checkbox id={createAlphabetIndex(i)} checked={data.selectedAnswer!.includes(createAlphabetIndex(i))} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
+                        <Checkbox 
+                        disabled={disabled}
+                        id={createAlphabetIndex(i)} checked={data.selectedAnswer!.includes(createAlphabetIndex(i))} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
                             return checked ?
                                 checkSelections(createAlphabetIndex(i))
                                 :

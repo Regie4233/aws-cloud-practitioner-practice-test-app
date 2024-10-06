@@ -7,7 +7,7 @@ import Exam from "./Exam";
 import { useDispatch } from "react-redux";
 import { getAllQuestionData } from "@/lib/state/questions/questionSlice";
 function Questionnaire({ questionList }:{questionList: QUESTION[]}) {
-  const countdata = useAppSelector((state) => state.questionData);
+  const countdata = useAppSelector((state) => state.questionData.items);
   const [cardindex, setCardIndex] = useState(0);
   const dispatch = useDispatch()
   

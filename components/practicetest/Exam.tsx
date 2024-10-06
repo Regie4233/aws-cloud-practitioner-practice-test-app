@@ -3,10 +3,36 @@ import Link from 'next/link'
 import QuestionCard from './QuestionCard'
 import { UserQuestionInput } from '@/lib/types'
 import { useDispatch } from 'react-redux'
-import { resetQuestions } from '@/lib/state/questions/questionSlice';
+import { getScore, resetQuestions } from '@/lib/state/questions/questionSlice';
+import { checkAnswer } from '@/lib/helpers';
+import { useHandleResult } from '@/lib/fetchhooks';
+import Results from './Results';
 
 function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { countdata: UserQuestionInput[], cardindex: number, setCardIndex: (index: number) => void, handleValueChange: (newValue: number) => void }) {
     const dispatch = useDispatch();
+    const { setState } = useHandleResult();
+
+    const getAnwserResults = () => {
+        countdata.forEach(element => {
+            if (checkAnswer(element)) {
+                setState(true, element);
+            } else {
+                setState(false, element);
+            }
+        });
+        dispatch(getScore());
+    }
+
+    const hasAnswer = (item: UserQuestionInput) => {
+        if (item.selectedAnswer === undefined) return;
+        if (item.selectedAnswer.length <= 0) return false;
+        return true
+    }
+    const hasResult = (item: UserQuestionInput) => {
+        if (item.selectedAnswer === undefined) return;
+        if (item.isCorrect) return true;
+        return false;
+    }
     return (
         <>
             <section className="border-x-2 border-t-2 p-8 flex flex-col justify-between gap-5 h-[50vh]">
@@ -20,18 +46,24 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                     cardindex !== 49 ?
                         <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex + 1)}>Next</button>
                         :
-                        <button className="hover:scale-105 transition-transform" onClick={() => (setCardIndex(0))}>Submit Answers</button>
+                        <button className="hover:scale-105 transition-transform" onClick={() => (getAnwserResults())}>Submit Answers</button>
                 }
 
             </section>
-            {/* Sidebar */}
+            {/* Questions Nav */}
             <section className="border-2 p-2 flex flex-col justify-center">
                 <ul className="grid grid-cols-12 text-center">
                     {
                         countdata.map((e, i) => {
                             if (e.selectedAnswer !== undefined)
                                 return (
-                                    <li key={i} className={`${cardindex === i ? 'border-2 border-dashed rounded-none border-gray-900' : 'cursor-pointer hover:underline'} ${e.selectedAnswer.length > 0 ? 'bg-green-600 border-2 rounded-full' : ''}`}
+                                    <li key={i} className={`${cardindex === i ? 'bg-green- border-2 border-dashed rounded-none border-gray-900' : 'cursor-pointer hover:underline'}`}
+                                        style={
+                                            e.isCorrect === undefined ?
+                                                hasAnswer(e) ? { background: '#60a5fa' } : {}
+                                                :
+                                                hasResult(e) ? { background: '#4ade80' } : { background: '#f87171' }
+                                        }
                                         onClick={() => setCardIndex(i)}
                                     >
                                         {e.index + 1}
@@ -41,6 +73,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                     }
                 </ul>
                 <Link href='/' className='self-center' onClick={() => dispatch(resetQuestions())}>Reset Exam</Link>
+                <Results />
             </section>
         </>
     )

@@ -6,7 +6,8 @@ export const makeStore = () => {
     reducer: {
       questionData: questionReducer,
       getQuestionData: questionReducer,
-      resetQuestions: questionReducer
+      resetQuestions: questionReducer,
+      setQuestionState: questionReducer
     },
   })
 }
