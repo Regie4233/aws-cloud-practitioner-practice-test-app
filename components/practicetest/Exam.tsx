@@ -1,10 +1,12 @@
 
-import { useChangeView } from '@/lib/clienthooks'
+import Link from 'next/link'
 import QuestionCard from './QuestionCard'
 import { UserQuestionInput } from '@/lib/types'
+import { useDispatch } from 'react-redux'
+import { resetQuestions } from '@/lib/state/questions/questionSlice';
 
 function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { countdata: UserQuestionInput[], cardindex: number, setCardIndex: (index: number) => void, handleValueChange: (newValue: number) => void }) {
-    const { handleSearch } = useChangeView()
+    const dispatch = useDispatch();
     return (
         <>
             <section className="border-x-2 border-t-2 p-8 flex flex-col justify-between gap-5 h-[50vh]">
@@ -18,12 +20,12 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                     cardindex !== 49 ?
                         <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex + 1)}>Next</button>
                         :
-                        <button className="hover:scale-105 transition-transform" onClick={() => (handleSearch('result'), setCardIndex(0))}>Submit Answers</button>
+                        <button className="hover:scale-105 transition-transform" onClick={() => (setCardIndex(0))}>Submit Answers</button>
                 }
 
             </section>
             {/* Sidebar */}
-            <section className="border-2 p-2">
+            <section className="border-2 p-2 flex flex-col justify-center">
                 <ul className="grid grid-cols-12 text-center">
                     {
                         countdata.map((e, i) => {
@@ -38,7 +40,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                         })
                     }
                 </ul>
-                <button className='w-full m-auto' onClick={() => handleSearch('home')}>Reset Exam</button>
+                <Link href='/' className='self-center' onClick={() => dispatch(resetQuestions())}>Reset Exam</Link>
             </section>
         </>
     )

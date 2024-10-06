@@ -1,15 +1,16 @@
+
 import { QUESTION, UserQuestionInput } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
-const initialState: Array<UserQuestionInput> = [];
-
+const initialState: Array<UserQuestionInput> = []
 const questionSlice = createSlice({
   name: 'questiondata',
   initialState,
   reducers: {
-    questionData: (state, action: PayloadAction<QUESTION[]>) => {
+    questionData: (state,action: PayloadAction<QUESTION[]>) => {
+      console.log("!!!!!!!!!")
       if (state.length > 0) return;
+    
       action.payload.forEach((element, i) => {
         state.push({
           question: element,
@@ -19,8 +20,8 @@ const questionSlice = createSlice({
       });
     },
     getAllQuestionData: (state, action: PayloadAction<QUESTION[]>) => {
+      if(state.length > 0) return;
       const questionnaire: Array<QUESTION> = [];
-
       for (let yy = 0; yy < 50; yy++) {
         for (let index = 0; index < action.payload.length; index++) {
           const randIndex = Math.floor(Math.random() * 150);
@@ -31,14 +32,16 @@ const questionSlice = createSlice({
           }
         }
       }
-    
+
       questionnaire.forEach((element, i) => {
+       if(state.some((object) => object.question.prompt === element.prompt)) return;
         state.push({
           question: element,
           selectedAnswer: [],
           index: i
         })
       });
+   
     },
     changeAnswer: (state, action: PayloadAction<UserQuestionInput>) => {
 
