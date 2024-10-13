@@ -9,5 +9,6 @@ export interface QUESTION {
 export interface UserQuestionInput {
     question: QUESTION,
     selectedAnswer?: Array<string>,
-    index: number
+    index: number,
+    isCorrect?: boolean
 }

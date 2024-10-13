@@ -1,22 +1,17 @@
 'use client'
 import { useAppSelector } from "@/lib/hooks";
-
 import { QUESTION } from "@/lib/types";
-import { useState } from "react";
-
-
+import { Suspense, useEffect, useState } from "react";
 import Exam from "./Exam";
-import Results from "./Results";
-import { useSearchParams } from "next/navigation";
-import ExamHome from "./ExamHome";
+
+import { useDispatch } from "react-redux";
+import { getAllQuestionData } from "@/lib/state/questions/questionSlice";
+import LoadingState from "./LoadingState";
 function Questionnaire({ questionList }:{questionList: QUESTION[]}) {
-  const countdata = useAppSelector((state) => state.questionData);
+  const countdata = useAppSelector((state) => state.questionData.items);
   const [cardindex, setCardIndex] = useState(0);
-
+  const dispatch = useDispatch()
   
-  const searchParams = useSearchParams();
-
-
   function handleValueChange(newValue: number) {
     const minValue = 0; 
     const maxValue = 49;
@@ -26,7 +21,11 @@ function Questionnaire({ questionList }:{questionList: QUESTION[]}) {
     setCardIndex(clampedValue);
   }
 
-  if (!countdata) { return; }
+  useEffect(() => {
+    dispatch(getAllQuestionData(questionList))
+  }, [])
+
+  // if (!countdata) { return; }
   return (
 
     <main className="md:w-1/2 m-auto flex flex-col h-screen">
@@ -36,18 +35,9 @@ function Questionnaire({ questionList }:{questionList: QUESTION[]}) {
         </h2>
       </section>
       <main className="flex flex-col justify-between">
-        {
-           searchParams.get('page') === 'home' ?
-            <ExamHome questionList={questionList}/>
-            :
-            searchParams.get('page') === 'exam' ?
-              <Exam countdata={countdata} cardindex={cardindex} setCardIndex={setCardIndex} handleValueChange={handleValueChange} />
-              :
-              searchParams.get('page') === 'result' ?
-                <Results data={countdata} />
-                :
-                null
-        }
+        <Suspense fallback={<LoadingState />}>
+        <Exam countdata={countdata} cardindex={cardindex} setCardIndex={setCardIndex} handleValueChange={handleValueChange} />
+        </Suspense>
       </main>
 
 

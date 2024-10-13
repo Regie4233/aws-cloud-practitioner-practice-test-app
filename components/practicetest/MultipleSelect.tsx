@@ -1,12 +1,13 @@
 'use client'
 import { UserQuestionInput } from '@/lib/types'
 import { Checkbox } from '../ui/checkbox'
-import { createAlphabetIndex } from '@/lib/helpers'
+import { createAlphabetIndex, getCorrection } from '@/lib/helpers'
 import { useHandleChangeAnswer } from '@/lib/fetchhooks'
+import { useAppSelector } from '@/lib/hooks'
 
-function MultipleSelect({ data }: { data: UserQuestionInput }) {
+function MultipleSelect({ data, disabled }: { data: UserQuestionInput, disabled: boolean }) {
     const { updateState } = useHandleChangeAnswer();
-  
+    const score = useAppSelector(state => state.questionData.score)
     const checkSelections = (answers: string) => {
         const newlist = [...data.selectedAnswer!, answers];
       
@@ -25,8 +26,14 @@ function MultipleSelect({ data }: { data: UserQuestionInput }) {
         <div>
             {
                 data.question.options.map((e, i) => (
-                    <div key={i} className="flex items-center space-x-2">
-                        <Checkbox id={createAlphabetIndex(i)} checked={data.selectedAnswer!.includes(createAlphabetIndex(i))} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
+                    <div key={i} className="flex items-center space-x-2 border-b-2 p-1 gap-1"
+                    style={
+                        score === -1 ? {} : (getCorrection(data, createAlphabetIndex(i).toUpperCase())
+                        ? {backgroundColor: '#fca5a5'} : {})}
+                        >
+                        <Checkbox 
+                        disabled={disabled}
+                        id={createAlphabetIndex(i)} checked={data.selectedAnswer!.includes(createAlphabetIndex(i))} value={createAlphabetIndex(i)} onCheckedChange={(checked) => {
                             return checked ?
                                 checkSelections(createAlphabetIndex(i))
                                 :
