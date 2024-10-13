@@ -30,7 +30,7 @@ function Results() {
                     <p className="text-xl"
                       style={getPercentile(data.score, data.items.length) >= 70 ? { color: '#22c55e' } : { color: '#ef4444' }}>
                       {
-                        getPercentile(data.score, data.items.length) >= 70 ? 'Passed' : 'Failed try again'
+                        getPercentile(data.score, data.items.length) >= 70 ? 'Passed' : 'Not Passed'
                       }
                     </p>
                   </DialogDescription>

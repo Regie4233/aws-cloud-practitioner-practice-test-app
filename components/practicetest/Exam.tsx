@@ -7,10 +7,12 @@ import { getScore, resetQuestions } from '@/lib/state/questions/questionSlice';
 import { checkAnswer } from '@/lib/helpers';
 import { useHandleResult } from '@/lib/fetchhooks';
 import Results from './Results';
+import { useAppSelector } from '@/lib/hooks';
 
 function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { countdata: UserQuestionInput[], cardindex: number, setCardIndex: (index: number) => void, handleValueChange: (newValue: number) => void }) {
     const dispatch = useDispatch();
     const { setState } = useHandleResult();
+    const score = useAppSelector((state) => state.questionData.score);
 
     const getAnwserResults = () => {
         countdata.forEach(element => {
@@ -35,7 +37,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
     }
     return (
         <>
-            <section className="border-x-2 border-t-2 p-8 flex flex-col justify-between gap-5 h-[50vh]">
+            <section className="border-x-2 border-t-2 p-8 flex flex-col justify-between gap-5 ">
                 <QuestionCard data={countdata[cardindex]} />
 
                 {/* button nav */}
@@ -44,15 +46,20 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                 <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex - 1)}>Prevous</button>
                 {
                     cardindex !== 49 ?
-                        <button className="hover:scale-105 transition-transform" onClick={() => handleValueChange(cardindex + 1)}>Next</button>
+                        <button className='hover:scale-105 transition-transform' onClick={() => handleValueChange(cardindex + 1)}>Next</button>
                         :
-                        <button className="hover:scale-105 transition-transform" onClick={() => (getAnwserResults())}>Submit Answers</button>
+                        <button
+                            style={
+                                score === -1 ? {color: 'black'} : {color: '#d1d5db'}
+                            }
+                            className='hover:scale-105 transition-transform'
+                            disabled={score !== -1 ? true : false} onClick={() => (getAnwserResults())}>Submit Answers</button>
                 }
 
             </section>
             {/* Questions Nav */}
             <section className="border-2 p-2 flex flex-col justify-center">
-                <ul className="grid grid-cols-12 text-center">
+                <ul className="grid grid-cols-6 md:grid-cols-12 text-center">
                     {
                         countdata.map((e, i) => {
                             if (e.selectedAnswer !== undefined)
@@ -64,8 +71,7 @@ function Exam({ countdata, cardindex, setCardIndex, handleValueChange }: { count
                                                 :
                                                 hasResult(e) ? { background: '#4ade80' } : { background: '#f87171' }
                                         }
-                                        onClick={() => setCardIndex(i)}
-                                    >
+                                        onClick={() => setCardIndex(i)}>
                                         {e.index + 1}
                                     </li>
                                 )

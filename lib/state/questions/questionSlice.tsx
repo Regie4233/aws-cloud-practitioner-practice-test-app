@@ -61,15 +61,15 @@ const questionSlice = createSlice({
     },
     resetQuestions: (state) => {
       state.items.length = 0;
+      state.score = -1;
     },
     getScore: (state) => {
-      let score = 0;
+      state.score = 0;
       state.items.forEach(element => {
         if (element.isCorrect) {
-          score =+ 1;
+          state.score++;
         }
       });
-      state.score = score;
     }
 
   }

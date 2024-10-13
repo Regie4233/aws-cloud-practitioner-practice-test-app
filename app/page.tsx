@@ -12,7 +12,7 @@ export default async function Home() {
         </h2>
       </section>
       <div className='text-lg border-2 p-8'>
-        <h3>Questions in this exam are verfied and maintained according to <a target='_blank' className='text-blue-700 underline' href='https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes/tree/master/practice-exam'>this repo</a>. Begining the exam, generates 50 randomized questions.</h3>
+        <h3>Questions in this exam are verfied and maintained according to <a target='_blank' className='text-blue-700 underline' href='https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes/tree/master/practice-exam'>this repo</a>. This exam generates 50 questions.</h3>
         <br />
         <p>Use this app as much as you&apos;d like to prepare you for AWS Cloud Certification. I will try to keep the questions up to date. I Wish you all the best in your journey!</p>
       </div>
